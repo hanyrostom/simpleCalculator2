@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+    <style>
+
+      body {
+        display: flex;
+        
+      }
+      
+      button {
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 33%;
+        background-color: orange;
+        color : white;
+      }
+      
+      button:active {
+        background-color: yellow;
+      }
+      
+      .sign {
+        padding: 5px;
+      }
+      
+      .calculator {
+        border: 1px solid blue;
+        height: 200px;
+        display:flex;
+        flex-direction: column;
+        width: 100px;
+        
+      }
+      
+      .row {
+        border: 1px solid beige;
+        display: flex;
+        justify-content: space-between;
+        
+      }
+      .numbers {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      #screen {
+        border: 1px solid purple;
+        height: 40px;
+        background-color: #1d1e22;
+        text-align: end;
+      }
+      
+      .total {
+        background-color : lime;
+      }
+    /* --------------------
+     Add your styling here
+     -------------------- */
+    </style>
+</head>
+<body style='border: 1px solid red; background-color:#444857;color: white;'>
+<div class="calculator">
+    <!----------------------
+    Add your markup here
+    ------------------------>
+  <div id='screen'>
+    0
+  </div>
+  <div class='numbers'>
+    <div class= 'row'>
+      <button value='1'>1</button>
+      <button value='2'>2</button>
+      <button value='3'>3</button>
+    </div>
+    <div class= 'row'>
+      <button value='4'>4</button>
+      <button value='5'>5</button>
+      <button value='6'>6</button>
+    </div>
+    <div class= 'row'>
+      <button value='7'>7</button>
+      <button value='8'>8</button>
+      <button value='9'>9</button>
+    </div>
+    <div class= 'row'>
+      <button onclick='reset()' >CE</button>
+      <button value='0'>0</button>
+      <button>.</button>
+    </div>
+      <div class= 'row functions'>
+        <button>+</button>
+        <button>-</button>
+        <button>X</button>
+        <button>/</button>
+        <button class='total'>=</button>
+    </div>
+  </div>
+</div>
+  <div class='state'>
+    <ul>
+      <li id='num1'>Number 1: </li>
+      <li id='num2'>Number 2: </li>
+      <li id='operation'>sign: </li>
+    </ul>
+  </div>
+<script>
+
+
+  
+  let render = ''
+  let num1 = 0
+  let num2 = 0
+  let total = 0
+  let sign = ''
+  
+  
+  
+  let buttons = document.getElementsByTagName('button')
+
+
+
+  let functionButtons = document.getElementsByClassName('functions')[0].children
+
+  for (let button of buttons) {
+    button.addEventListener('click',display)
+  }
+  
+  for (let functionButton of functionButtons){
+    functionButton.classList.add("sign")
+    functionButton.addEventListener("click", calculate)
+  }
+
+  function highlight(event) {
+    event.target.style.backgroundColor = 'yellow'
+  }
+
+  function unhighlight(event) {
+      event.target.style.backgroundColor = 'orange'
+    }
+
+  function display(event){
+    if(!num1){
+      render += event.target.value
+      document.getElementById('screen').innerHTML = render
+      
+    }else if (render == num1){
+      render = ''
+      render += event.target.value
+      document.getElementById('screen').innerHTML = render
+    }
+
+      // render += event.target.value
+      // document.getElementById('screen').innerHTML = render
+
+
+      let num1Display = document.getElementById('num1').innerHTML
+      console.log(num1Display)
+      document.getElementById('num1').innerHTML = num1 ? `${num1Display} ${num1}` : `${num1Display} ${render}`
+      
+  }
+
+  function calculate () {
+    console.log('e.target', event.target.innerHTML)
+    sign = event.target.innerHTML
+    num1 = Number(render)
+    
+    
+    if(num1 && !num2) {
+      render = num1
+      console.log('num1: ', num1)
+      num2 = true
+    } else if (num1 && num2) {
+      num2 = Number(render)
+      console.log('calculating:', num1,`${sign} `,num2)
+      document.getElementById('screen').innerHTML = signs[sign]
+    }
+
+    var signs = {
+        '+' : (num1 + num),
+        '-' : (num1 - num),
+        'X' : (num1 * num),
+        '/' : (num1 + num)
+      }
+    
+    return signs[sign]
+  }
+
+  function reset() {
+    num1 = num2 = total = 0
+     render = '0'
+  }
+    /* --------------------
+     Add your code here
+    --------------------- */
+</script>
+</body>
+</html>
